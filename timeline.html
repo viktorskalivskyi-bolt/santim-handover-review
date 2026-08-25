@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>SANTIM — таймлайни шести замовлень і причини fail</title>
+<style>
+  @page { size: A4; margin: 11mm 12mm; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    color: #16181d;
+    font: 9.6pt/1.35 -apple-system, "Helvetica Neue", Arial, sans-serif;
+  }
+  h1 { font-size: 18pt; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { color: #5c6270; font-size: 8.6pt; margin-bottom: 12px; }
+  h2 { font-size: 11pt; margin: 0 0 2px; }
+  .order { page-break-inside: avoid; margin-bottom: 11px; padding-bottom: 8px; border-bottom: 1px solid #e3e5ea; }
+  .fail {
+    background: #f6f7f9;
+    border-left: 3px solid #8a5a00;
+    padding: 5px 9px;
+    margin: 5px 0 6px;
+    font-size: 8.8pt;
+  }
+  .fail b { color: #8a5a00; }
+  table { border-collapse: collapse; width: 100%; font-size: 8.8pt; }
+  th, td { text-align: left; padding: 2.5px 8px; border-bottom: 1px solid #eceef1; vertical-align: top; }
+  th { color: #5c6270; font-size: 7.8pt; text-transform: uppercase; letter-spacing: 0.04em; }
+  td.t { white-space: nowrap; font-variant-numeric: tabular-nums; width: 74px; }
+  td.who { white-space: nowrap; width: 96px; color: #5c6270; }
+  .gap td { background: #fdf6e7; }
+  .summary { page-break-before: always; }
+  .summary table { font-size: 9pt; }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 9pt; }
+  footer { margin-top: 18px; color: #5c6270; font-size: 8.5pt; }
+</style>
+</head>
+<body>
+
+<h1>SANTIM / Копійка — таймлайни замовлень і причини fail</h1>
+<p class="sub">Одеса · 2–7 липня 2026 · час київський (Europe/Kyiv) · джерело: Bolt Delivery, ng_delivery.<br>
+Arrive до магазину та pickup відсутні в усіх шести замовленнях. Виплата партнеру: 0 на всіх шести.</p>
+
+<div class="order">
+<h2>316712551 · E5BV6 · 9 599,97 ₴</h2>
+<div class="fail"><b>Причина fail:</b> automatically_failed (автоматично, без CS) · 2 липня 22:50</div>
+<table>
+<thead><tr><th>Час</th><th>Учасник</th><th>Подія</th></tr></thead>
+<tbody>
+<tr><td class="t">19:47:29</td><td class="who">ордер</td><td>Створено → waiting_acceptance</td></tr>
+<tr><td class="t">19:47:35</td><td class="who">магазин</td><td>accepted → preparing</td></tr>
+<tr><td class="t">20:02:50</td><td class="who">магазин</td><td>Готово → waiting_pickup</td></tr>
+<tr><td class="t">20:02:56</td><td class="who">кур’єр 1779119</td><td>Запропоновано</td></tr>
+<tr><td class="t">20:03:03</td><td class="who">кур’єр 1779119</td><td>Прийняв замовлення</td></tr>
+<tr class="gap"><td class="t">20:03 → 22:50</td><td class="who">—</td><td>2 год 47 хв без arrive і без pickup</td></tr>
+<tr><td class="t">22:50:12</td><td class="who">кур’єр 1779119</td><td>rejected</td></tr>
+<tr><td class="t">22:50:33</td><td class="who">ордер / магазин</td><td>failed</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="order">
+<h2>316890607 · 5X7TT · 16 582,80 ₴</h2>
+<div class="fail"><b>Причина fail:</b> automatically_failed (автоматично, без CS) · 3 липня 22:48</div>
+<table>
+<thead><tr><th>Час</th><th>Учасник</th><th>Подія</th></tr></thead>
+<tbody>
+<tr><td class="t">17:44:43</td><td class="who">ордер</td><td>Створено → waiting_acceptance</td></tr>
+<tr><td class="t">17:44:48</td><td class="who">магазин</td><td>accepted → preparing</td></tr>
+<tr><td class="t">18:04:04</td><td class="who">кур’єр 1779119</td><td>Запропоновано</td></tr>
+<tr><td class="t">18:04:09</td><td class="who">кур’єр 1779119</td><td>Прийняв замовлення</td></tr>
+<tr><td class="t">18:19:30</td><td class="who">магазин</td><td>Готово → waiting_pickup</td></tr>
+<tr class="gap"><td class="t">18:19 → 22:48</td><td class="who">—</td><td>4 год 29 хв без arrive і без pickup</td></tr>
+<tr><td class="t">22:48:33</td><td class="who">кур’єр 1779119</td><td>rejected</td></tr>
+<tr><td class="t">22:48:39</td><td class="who">ордер / магазин</td><td>failed</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="order">
+<h2>317158863 · Z9DGW · 7 672,20 ₴</h2>
+<div class="fail"><b>Причина fail:</b> manually_failed_by_cs — «Restaurant closed – working hours issue», адмін Dmytro Skrebnytskyi · 4 липня 22:59 · Beehive case 839995892</div>
+<table>
+<thead><tr><th>Час</th><th>Учасник</th><th>Подія</th></tr></thead>
+<tbody>
+<tr><td class="t">20:43:23</td><td class="who">ордер</td><td>Створено → waiting_acceptance</td></tr>
+<tr><td class="t">20:43:30</td><td class="who">магазин</td><td>accepted → preparing</td></tr>
+<tr><td class="t">21:00:57</td><td class="who">магазин</td><td>Готово → waiting_pickup</td></tr>
+<tr><td class="t">21:01:11</td><td class="who">кур’єр 1779119</td><td>Запропоновано</td></tr>
+<tr><td class="t">21:01:17</td><td class="who">кур’єр 1779119</td><td>Прийняв замовлення</td></tr>
+<tr class="gap"><td class="t">21:01 → 22:47</td><td class="who">—</td><td>1 год 46 хв без arrive і без pickup</td></tr>
+<tr><td class="t">22:47:18</td><td class="who">кур’єр 1779119</td><td>rejected</td></tr>
+<tr><td class="t">22:47:26</td><td class="who">кур’єр 833240</td><td>Запропоновано</td></tr>
+<tr><td class="t">22:47:35</td><td class="who">кур’єр 833240</td><td>rejected (не прийняв)</td></tr>
+<tr><td class="t">22:50:25</td><td class="who">кур’єр 1899110</td><td>Запропоновано</td></tr>
+<tr><td class="t">22:50:30</td><td class="who">кур’єр 1899110</td><td>Прийняв замовлення</td></tr>
+<tr><td class="t">22:59:09</td><td class="who">кур’єр 1899110</td><td>rejected</td></tr>
+<tr><td class="t">22:59:17</td><td class="who">ордер / магазин</td><td>failed (CS: магазин закритий)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="order">
+<h2>317348385 · 8BC0B · 10 973,15 ₴</h2>
+<div class="fail"><b>Причина fail:</b> automatically_failed (автоматично, без CS) · 5 липня 22:55</div>
+<table>
+<thead><tr><th>Час</th><th>Учасник</th><th>Подія</th></tr></thead>
+<tbody>
+<tr><td class="t">19:34:20</td><td class="who">ордер</td><td>Створено → waiting_acceptance</td></tr>
+<tr><td class="t">19:34:35</td><td class="who">магазин</td><td>accepted → preparing</td></tr>
+<tr><td class="t">19:47:08</td><td class="who">кур’єр 1899110</td><td>Запропоновано (ще до готовності)</td></tr>
+<tr><td class="t">19:47:13</td><td class="who">кур’єр 1899110</td><td>Прийняв замовлення</td></tr>
+<tr><td class="t">19:54:38</td><td class="who">магазин</td><td>Готово → waiting_pickup</td></tr>
+<tr class="gap"><td class="t">19:54 → 22:55</td><td class="who">—</td><td>3 год 01 хв без arrive і без pickup</td></tr>
+<tr><td class="t">22:55:30</td><td class="who">кур’єр 1899110</td><td>rejected</td></tr>
+<tr><td class="t">22:55:46</td><td class="who">ордер / магазин</td><td>failed</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="order">
+<h2>317558793 · HQPGG · 17 332,56 ₴</h2>
+<div class="fail"><b>Причина fail:</b> manually_failed_by_cs — «Provider asked to cancel – Item out of stock», адмін Viktoriia Spanchak · 6 липня 21:10 · Beehive case 841393589</div>
+<table>
+<thead><tr><th>Час</th><th>Учасник</th><th>Подія</th></tr></thead>
+<tbody>
+<tr><td class="t">20:01:35</td><td class="who">ордер</td><td>Створено → waiting_acceptance</td></tr>
+<tr><td class="t">20:01:41</td><td class="who">магазин</td><td>accepted → preparing</td></tr>
+<tr><td class="t">20:23:27</td><td class="who">кур’єр 1899110</td><td>Запропоновано</td></tr>
+<tr><td class="t">20:23:32</td><td class="who">кур’єр 1899110</td><td>Прийняв замовлення</td></tr>
+<tr class="gap"><td class="t">20:23 → 21:10</td><td class="who">магазин</td><td>Статус «готово» так і не виставлено — лишався preparing</td></tr>
+<tr><td class="t">21:10:16</td><td class="who">ордер / магазин / кур’єр</td><td>failed (CS: партнер попросив скасувати, немає в наявності)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="order">
+<h2>317791198 · 2N4ST · 21 442,16 ₴ — заявлена претензія</h2>
+<div class="fail"><b>Причина fail:</b> manually_failed_by_cs — «Other / restaurant was closed», адмін Julia Legathova · 8 липня 00:18</div>
+<table>
+<thead><tr><th>Час</th><th>Учасник</th><th>Подія</th></tr></thead>
+<tbody>
+<tr><td class="t">22:29:28</td><td class="who">ордер</td><td>Створено → waiting_acceptance</td></tr>
+<tr><td class="t">22:29:32</td><td class="who">магазин</td><td>accepted → preparing (за 4 секунди)</td></tr>
+<tr><td class="t">22:32:08</td><td class="who">кур’єр 1899110</td><td>Запропоновано</td></tr>
+<tr><td class="t">22:32:15</td><td class="who">кур’єр 1899110</td><td>Прийняв замовлення</td></tr>
+<tr><td class="t">22:32:47</td><td class="who">магазин</td><td>Готово → waiting_pickup</td></tr>
+<tr class="gap"><td class="t">22:32 → 00:18</td><td class="who">—</td><td>1 год 46 хв без arrive і без pickup</td></tr>
+<tr><td class="t">00:18:40</td><td class="who">кур’єр / ордер</td><td>failed</td></tr>
+<tr><td class="t">00:18:41</td><td class="who">магазин</td><td>failed (CS: ресторан закритий)</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="summary">
+<h1 style="font-size:14pt">Зведення причин</h1>
+<table>
+<thead><tr><th>ID замовлення</th><th>Ref</th><th>Дата fail (Київ)</th><th>Хто закрив</th><th>Причина в системі</th></tr></thead>
+<tbody>
+<tr><td><code>316712551</code></td><td>E5BV6</td><td>2 лип 22:50</td><td>автоматично</td><td>automatically_failed — таймаут очікування pickup</td></tr>
+<tr><td><code>316890607</code></td><td>5X7TT</td><td>3 лип 22:48</td><td>автоматично</td><td>automatically_failed — таймаут очікування pickup</td></tr>
+<tr><td><code>317158863</code></td><td>Z9DGW</td><td>4 лип 22:59</td><td>CS (D. Skrebnytskyi)</td><td>Restaurant closed – working hours issue</td></tr>
+<tr><td><code>317348385</code></td><td>8BC0B</td><td>5 лип 22:55</td><td>автоматично</td><td>automatically_failed — таймаут очікування pickup</td></tr>
+<tr><td><code>317558793</code></td><td>HQPGG</td><td>6 лип 21:10</td><td>CS (V. Spanchak)</td><td>Provider asked to cancel – Item out of stock</td></tr>
+<tr><td><code>317791198</code></td><td>2N4ST</td><td>8 лип 00:18</td><td>CS (J. Legathova)</td><td>Other — restaurant was closed</td></tr>
+</tbody>
+</table>
+
+<p style="margin-top:14px">Спільне для всіх шести: кур’єр приймав замовлення, але жодного разу не відмічав ні прибуття до магазину, ні отримання товару. Три замовлення закрила система по таймауту, три — підтримка Bolt зі слів партнера або через години роботи. У чотирьох випадках магазин перед цим уже виставив статус «готово».</p>
+</div>
+
+<footer>Дані: Bolt Delivery production tables, липень 2026. Документ описовий, не є юридичним висновком.</footer>
+
+</body>
+</html>
