@@ -81,23 +81,28 @@
 
 <h2>Суми (provider basket)</h2>
 <table>
-<thead><tr><th>#</th><th>Дата (Київ)</th><th>Кошик</th><th>Ref / order id</th><th>Точка</th><th>Якір SKU</th><th>Претензія</th></tr></thead>
+<thead><tr><th>#</th><th>Дата (Київ)</th><th>Кошик</th><th>Ref / order id</th><th>Точка</th><th>Кур’єр ID</th><th>Якір SKU</th><th>Претензія</th></tr></thead>
 <tbody>
-<tr><td>1</td><td class="num">7 липня 2026, 22:29</td><td class="num"><strong>21 442,16 ₴</strong></td><td>2N4ST / 317791198</td><td>Сабанський 3</td><td>Macallan 18y 0.7л (21 432,92)</td><td>так</td></tr>
-<tr><td>2</td><td class="num">6 липня 2026, 20:01</td><td class="num">17 332,56 ₴</td><td>HQPGG / 317558793</td><td>Самофалова 16</td><td>Dom Pérignon 0.75 (17 323,32)</td><td>ні</td></tr>
-<tr><td>3</td><td class="num">3 липня 2026, 17:44</td><td class="num">16 582,80 ₴</td><td>5X7TT / 316890607</td><td>Самофалова 16</td><td>Veuve Rosé + Moët + стейки</td><td>ні</td></tr>
-<tr><td>4</td><td class="num">5 липня 2026, 19:34</td><td class="num">10 973,15 ₴</td><td>8BC0B / 317348385</td><td>Самофалова 16</td><td>Moët Rosé + Veuve + Guinness</td><td>ні</td></tr>
-<tr><td>5</td><td class="num">2 липня 2026, 19:47</td><td class="num">9 599,97 ₴</td><td>E5BV6 / 316712551</td><td>Самофалова 16</td><td>Veuve + філе міньйон</td><td>ні</td></tr>
-<tr><td>6</td><td class="num">4 липня 2026, 20:43</td><td class="num">7 672,20 ₴</td><td>Z9DGW / 317158863</td><td>Самофалова 16</td><td>манго + ікра + шоколад</td><td>ні</td></tr>
+<tr><td>1</td><td class="num">7 липня 2026, 22:29</td><td class="num"><strong>21 442,16 ₴</strong></td><td>2N4ST / 317791198</td><td>Сабанський 3</td><td><code>1899110</code></td><td>Macallan 18y 0.7л (21 432,92)</td><td>так</td></tr>
+<tr><td>2</td><td class="num">6 липня 2026, 20:01</td><td class="num">17 332,56 ₴</td><td>HQPGG / 317558793</td><td>Самофалова 16</td><td><code>1899110</code></td><td>Dom Pérignon 0.75 (17 323,32)</td><td>ні</td></tr>
+<tr><td>3</td><td class="num">3 липня 2026, 17:44</td><td class="num">16 582,80 ₴</td><td>5X7TT / 316890607</td><td>Самофалова 16</td><td><code>1779119</code></td><td>Veuve Rosé + Moët + стейки</td><td>ні</td></tr>
+<tr><td>4</td><td class="num">5 липня 2026, 19:34</td><td class="num">10 973,15 ₴</td><td>8BC0B / 317348385</td><td>Самофалова 16</td><td><code>1899110</code></td><td>Moët Rosé + Veuve + Guinness</td><td>ні</td></tr>
+<tr><td>5</td><td class="num">2 липня 2026, 19:47</td><td class="num">9 599,97 ₴</td><td>E5BV6 / 316712551</td><td>Самофалова 16</td><td><code>1779119</code></td><td>Veuve + філе міньйон</td><td>ні</td></tr>
+<tr><td>6</td><td class="num">4 липня 2026, 20:43</td><td class="num">7 672,20 ₴</td><td>Z9DGW / 317158863</td><td>Самофалова 16</td><td><code>1779119</code> → <code>1899110</code></td><td>манго + ікра + шоколад</td><td>ні</td></tr>
 </tbody>
 </table>
 <p>Разом: <strong>83 602,84 ₴</strong>. У лист партнеру входить лише рядок 1.</p>
+<p>Це <strong>не один кур’єр на всі шість</strong>, а два акаунти, обидва з 0 delivered за життя, створені 1 липня, заблоковані ~10 липня:</p>
+<ul>
+  <li><code>1899110</code> — 2N4ST, HQPGG, 8BC0B і останній на Z9DGW (чотири з шести, включно з претензією).</li>
+  <li><code>1779119</code> — E5BV6, 5X7TT і перший на Z9DGW.</li>
+</ul>
 
 <h2>Розбір по кожному чеку</h2>
 
 <div class="case">
 <h3>1. 2N4ST — 21 442,16 ₴ · 7 липня 2026, 22:29 (єдиний офіційний спір)</h3>
-<p class="facts">7 липня 2026, 22:29. Кошик: Macallan Double Cask 18 років 0.7л + пакет 9,24 ₴. Магазин прийняв за ~4 с, ready о 22:32. Кур’єр accepted о 22:32 (~300 м від точки). Arrive / pickup немає. Підтримка Bolt закрила ордер о 00:18 8 липня з причиною «restaurant was closed». Чек Копійки збігається з кошиком 1:1.</p>
+<p class="facts">7 липня 2026, 22:29. Кур’єр <code>1899110</code>. Кошик: Macallan Double Cask 18 років 0.7л + пакет 9,24 ₴. Магазин прийняв за ~4 с, ready о 22:32. Кур’єр accepted о 22:32 (~300 м від точки). Arrive / pickup немає. Підтримка Bolt закрила ордер о 00:18 8 липня з причиною «restaurant was closed». Чек Копійки збігається з кошиком 1:1.</p>
 <div class="cols">
   <div>
     <h4>Прогалина Bolt / кур’єра</h4>
@@ -123,7 +128,7 @@
 
 <div class="case">
 <h3>2. HQPGG — 17 332,56 ₴ · 6 липня 2026, 20:01 (Dom Pérignon)</h3>
-<p class="facts">6 липня 2026, 20:01. Одна пляшка ~17 323 ₴ + пакет. Магазин <strong>не</strong> ставив ready (лишився preparing). Кур’єр accepted, GPS ~70 м від дверей. Arrive немає. CS: партнер попросив скасувати, «немає в наявності».</p>
+<p class="facts">6 липня 2026, 20:01. Кур’єр <code>1899110</code> (той самий, що 2N4ST). Одна пляшка ~17 323 ₴ + пакет. Магазин <strong>не</strong> ставив ready (лишився preparing). Кур’єр accepted, GPS ~70 м від дверей. Arrive немає. CS: партнер попросив скасувати, «немає в наявності».</p>
 <div class="cols">
   <div>
     <h4>Bolt / кур’єр</h4>
@@ -139,7 +144,7 @@
 
 <div class="case">
 <h3>3. 5X7TT — 16 582,80 ₴ · 3 липня 2026, 17:44</h3>
-<p class="facts">3 липня 2026, 17:44. Veuve Clicquot Rosé 5 236 ₴, Moët Impérial 3 440 ₴, стейки, лосось. Магазин поставив ready. Кур’єр (інший акаунт, теж 0 delivered) не зробив pickup. Авто-fail після кількох годин очікування.</p>
+<p class="facts">3 липня 2026, 17:44. Кур’єр <code>1779119</code> (інший акаунт). Veuve Clicquot Rosé 5 236 ₴, Moët Impérial 3 440 ₴, стейки, лосось. Магазин поставив ready. Pickup немає. Авто-fail після кількох годин очікування.</p>
 <div class="cols">
   <div>
     <h4>Bolt / кур’єр</h4>
@@ -155,7 +160,7 @@
 
 <div class="case">
 <h3>4. 8BC0B — 10 973,15 ₴ · 5 липня 2026, 19:34</h3>
-<p class="facts">5 липня 2026, 19:34. Moët Rosé 4 489 ₴, Veuve brut 3 977 ₴, 17 банок Guinness, Persil. Ready був. Кур’єр accepted ~180 м від точки, потім redispatch «довге очікування в ресторані». Pickup немає.</p>
+<p class="facts">5 липня 2026, 19:34. Кур’єр <code>1899110</code> (той самий, що 2N4ST). Moët Rosé 4 489 ₴, Veuve brut 3 977 ₴, 17 банок Guinness, Persil. Ready був. Accepted ~180 м від точки, потім redispatch «довге очікування в ресторані». Pickup немає.</p>
 <div class="cols">
   <div>
     <h4>Bolt / кур’єр</h4>
@@ -171,7 +176,7 @@
 
 <div class="case">
 <h3>5. E5BV6 — 9 599,97 ₴ · 2 липня 2026, 19:47</h3>
-<p class="facts">2 липня 2026, 19:47. Veuve 4 488 ₴, філе міньйон ×4 3 139 ₴, стейк і риба. Ready був. Pickup немає. Авто-fail.</p>
+<p class="facts">2 липня 2026, 19:47. Кур’єр <code>1779119</code>. Veuve 4 488 ₴, філе міньйон ×4 3 139 ₴, стейк і риба. Ready був. Pickup немає. Авто-fail.</p>
 <div class="cols">
   <div>
     <h4>Bolt / кур’єр</h4>
@@ -187,7 +192,7 @@
 
 <div class="case">
 <h3>6. Z9DGW — 7 672,20 ₴ · 4 липня 2026, 20:43</h3>
-<p class="facts">4 липня 2026, 20:43. Манго, ікра, шоколад — без алкоголю. Ready був. Кілька кур’єрів. CS: «restaurant closed / working hours».</p>
+<p class="facts">4 липня 2026, 20:43. Кур’єри: спочатку <code>1779119</code>, потім <code>1899110</code> (останній accepted). Манго, ікра, шоколад — без алкоголю. Ready був. Arrive / pickup немає. CS: «restaurant closed / working hours».</p>
 <div class="cols">
   <div>
     <h4>Bolt / кур’єр</h4>
