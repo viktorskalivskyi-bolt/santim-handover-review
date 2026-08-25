@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SANTIM / Копійка — огляд 6 великих failed-чеків</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #16181d;
+    --muted: #5c6270;
+    --line: #e3e5ea;
+    --soft: #f6f7f9;
+    --warn: #8a5a00;
+    --warn-bg: #fdf6e7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; padding: 48px 24px 96px; }
+  h1 { font-size: 30px; line-height: 1.25; margin: 0 0 8px; letter-spacing: -0.01em; }
+  h2 { font-size: 21px; margin: 44px 0 12px; padding-top: 20px; border-top: 1px solid var(--line); letter-spacing: -0.01em; }
+  h3 { font-size: 17px; margin: 28px 0 8px; }
+  p { margin: 10px 0; }
+  .sub { color: var(--muted); margin-bottom: 28px; }
+  .lead {
+    background: var(--warn-bg);
+    border-left: 3px solid var(--warn);
+    padding: 14px 18px;
+    margin: 24px 0;
+  }
+  .lead strong { color: var(--warn); }
+  table { border-collapse: collapse; width: 100%; margin: 16px 0; font-size: 14px; }
+  th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 600; color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; }
+  tbody tr:hover { background: var(--soft); }
+  .num { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .case { border: 1px solid var(--line); border-radius: 8px; padding: 18px 20px; margin: 18px 0; }
+  .case h3 { margin-top: 0; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 14px; }
+  .cols h4 { margin: 0 0 6px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+  ul { margin: 6px 0; padding-left: 20px; }
+  li { margin: 4px 0; }
+  .verdict { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
+  .facts { background: var(--soft); padding: 12px 16px; border-radius: 6px; font-size: 15px; }
+  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  code { background: var(--soft); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  @media (max-width: 700px) { .cols { grid-template-columns: 1fr; } .wrap { padding: 28px 16px 64px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<h1>SANTIM / Копійка (Одеса): огляд 6 великих failed-чеків</h1>
+<p class="sub">Виробничі дані Bolt Delivery (<code>ng_delivery</code>) · липень 2026 · точки Сабанський провулок 3 і вул. Валерія Самофалова 16</p>
+
+<div class="lead">
+  <p><strong>Висновок наперед:</strong> за наявними даними жоден із цих ордерів не є ситуацією, де винна лише Bolt. Так само жоден не доводить одноосібну провину партнера. Handover у додатку Bolt не зафіксований; у партнера немає відео. Це спільний процесний розрив.</p>
+</div>
+
+<p>Документ зібраний для розбору претензії по <strong>2N4ST</strong> і внутрішнього контексту п’яти сусідніх чеків. Це не юридичний висновок і не звинувачення в шахрайстві.</p>
+
+<p>Pickup / arrive відсутні на всіх шести ордерах. <code>is_provider_paid = false</code> на всіх шести.</p>
+
+<h2>Правило оцінки</h2>
+<table>
+<thead><tr><th>Якщо дивитись лише на…</th><th>Легко сказати</th><th>Чому це неправда</th></tr></thead>
+<tbody>
+<tr><td>Стейт Bolt (failed, не paid)</td><td>«Bolt нічого не винна»</td><td>Магазин ставив ready, пробивав POS, віддавав 18+ без фіксації одержувача. У Bolt на Копійці не було пікап-кодів.</td></tr>
+<tr><td>Чек партнера</td><td>«Кур’єр забрав, платіть 100%»</td><td>Чек = пробиття в касі, не акт видачі. В аппі немає arrive/pickup. Відео немає.</td></tr>
+<tr><td>Fail «магазин закритий»</td><td>«Це магазин»</td><td>За хвилини до того той самий магазин був у стані ready (<code>waiting_pickup</code>).</td></tr>
+<tr><td>Новий кур’єр без delivered</td><td>«Це тільки кур’єр Bolt»</td><td>Унікальний алкоголь на 17–21 тис. грн без коду й паспорта каса чужому не віддає випадково щоночі.</td></tr>
+</tbody>
+</table>
+
+<p><strong>Робоча позиція по заявленій претензії (2N4ST): 50/50, без визнання провини сторін.</strong></p>
+
+<h2>Суми (provider basket)</h2>
+<table>
+<thead><tr><th>#</th><th>Кошик</th><th>Ref / order id</th><th>Точка</th><th>Якір SKU</th><th>Претензія</th></tr></thead>
+<tbody>
+<tr><td>1</td><td class="num"><strong>21 442,16 ₴</strong></td><td>2N4ST / 317791198</td><td>Сабанський 3</td><td>Macallan 18y 0.7л (21 432,92)</td><td>так</td></tr>
+<tr><td>2</td><td class="num">17 332,56 ₴</td><td>HQPGG / 317558793</td><td>Самофалова 16</td><td>Dom Pérignon 0.75 (17 323,32)</td><td>ні</td></tr>
+<tr><td>3</td><td class="num">16 582,80 ₴</td><td>5X7TT / 316890607</td><td>Самофалова 16</td><td>Veuve Rosé + Moët + стейки</td><td>ні</td></tr>
+<tr><td>4</td><td class="num">10 973,15 ₴</td><td>8BC0B / 317348385</td><td>Самофалова 16</td><td>Moët Rosé + Veuve + Guinness</td><td>ні</td></tr>
+<tr><td>5</td><td class="num">9 599,97 ₴</td><td>E5BV6 / 316712551</td><td>Самофалова 16</td><td>Veuve + філе міньйон</td><td>ні</td></tr>
+<tr><td>6</td><td class="num">7 672,20 ₴</td><td>Z9DGW / 317158863</td><td>Самофалова 16</td><td>манго + ікра + шоколад</td><td>ні</td></tr>
+</tbody>
+</table>
+<p>Разом: <strong>83 602,84 ₴</strong>. У лист партнеру входить лише рядок 1.</p>
+
+<h2>Розбір по кожному чеку</h2>
+
+<div class="case">
+<h3>1. 2N4ST — 21 442,16 ₴ (єдиний офіційний спір)</h3>
+<p class="facts">7 липня ~22:29. Кошик: Macallan Double Cask 18 років 0.7л + пакет 9,24 ₴. Магазин прийняв за ~4 с, ready о 22:32. Кур’єр accepted о 22:32 (~300 м від точки). Arrive / pickup немає. Підтримка Bolt закрила ордер о 00:18 8 липня з причиною «restaurant was closed». Чек Копійки збігається з кошиком 1:1.</p>
+<div class="cols">
+  <div>
+    <h4>Прогалина Bolt / кур’єра</h4>
+    <ul>
+      <li>Кур’єр не відмітив ні прибуття, ні отримання; ~1 год 46 хв у статусі accepted.</li>
+      <li>Пікап-коди для Копійки не були увімкнені (на відміну від VARUS).</li>
+      <li>Fail зробила підтримка Bolt, не кур’єр кнопкою «магазин закритий».</li>
+      <li>Кур’єр без жодного delivered в історії — слабкий контроль саплаю.</li>
+    </ul>
+  </div>
+  <div>
+    <h4>Прогалина партнера</h4>
+    <ul>
+      <li>Чек фіксує касу, не передачу конкретній людині.</li>
+      <li>Алкоголь 18+ на 21 тис. грн — без коду, звірки й підпису.</li>
+      <li>Магазин сам поставив ready, тобто зібрав; пізніше версія для CS — «закриті».</li>
+      <li>Відео не збережене; претензія прийшла після їхнього ж вікна (~12 днів).</li>
+    </ul>
+  </div>
+</div>
+<p class="verdict">Не є виною лише Bolt. Не є виною лише партнер.</p>
+</div>
+
+<div class="case">
+<h3>2. HQPGG — 17 332,56 ₴ (Dom Pérignon)</h3>
+<p class="facts">6 липня. Одна пляшка ~17 323 ₴ + пакет. Магазин <strong>не</strong> ставив ready (лишився preparing). Кур’єр accepted, GPS ~70 м від дверей. Arrive немає. CS: партнер попросив скасувати, «немає в наявності».</p>
+<div class="cols">
+  <div>
+    <h4>Bolt / кур’єр</h4>
+    <ul><li>Сидів біля точки й не зробив arrive/pickup.</li><li>Той самий кур’єр, що на 2N4ST.</li></ul>
+  </div>
+  <div>
+    <h4>Партнер</h4>
+    <ul><li>Сам ініціював скасування як OOS.</li><li>Якщо товар вийшов — це розрив на касі. Якщо не вийшов — претензії бути не повинно.</li></ul>
+  </div>
+</div>
+<p class="verdict">Не є виною лише Bolt.</p>
+</div>
+
+<div class="case">
+<h3>3. 5X7TT — 16 582,80 ₴</h3>
+<p class="facts">Veuve Clicquot Rosé 5 236 ₴, Moët Impérial 3 440 ₴, стейки, лосось. Магазин поставив ready. Кур’єр (інший акаунт, теж 0 delivered) не зробив pickup. Авто-fail після кількох годин очікування.</p>
+<div class="cols">
+  <div>
+    <h4>Bolt / кур’єр</h4>
+    <ul><li>Ордер годинами висів без arrive.</li><li>Саплай-акаунт без історії доставок.</li></ul>
+  </div>
+  <div>
+    <h4>Партнер</h4>
+    <ul><li>18+ шампанське зібране й готове до видачі.</li><li>Немає фіксації, кому віддали.</li></ul>
+  </div>
+</div>
+<p class="verdict">Не є виною лише Bolt.</p>
+</div>
+
+<div class="case">
+<h3>4. 8BC0B — 10 973,15 ₴</h3>
+<p class="facts">Moët Rosé 4 489 ₴, Veuve brut 3 977 ₴, 17 банок Guinness, Persil. Ready був. Кур’єр accepted ~180 м від точки, потім redispatch «довге очікування в ресторані». Pickup немає.</p>
+<div class="cols">
+  <div>
+    <h4>Bolt / кур’єр</h4>
+    <ul><li>Не закрив handover.</li><li>Redispatch замість arrive.</li></ul>
+  </div>
+  <div>
+    <h4>Партнер</h4>
+    <ul><li>Ready + великий 18+ кошик без коду видачі.</li><li>«Довге очікування» не узгоджується з версією «ми все віддали».</li></ul>
+  </div>
+</div>
+<p class="verdict">Не є виною лише Bolt.</p>
+</div>
+
+<div class="case">
+<h3>5. E5BV6 — 9 599,97 ₴</h3>
+<p class="facts">Veuve 4 488 ₴, філе міньйон ×4 3 139 ₴, стейк і риба. Ready був. Pickup немає. Авто-fail.</p>
+<div class="cols">
+  <div>
+    <h4>Bolt / кур’єр</h4>
+    <ul><li>Той самий патерн: акаунт без delivered, немає arrive.</li></ul>
+  </div>
+  <div>
+    <h4>Партнер</h4>
+    <ul><li>Зібрали преміум-кошик, ready, без доказу видачі.</li></ul>
+  </div>
+</div>
+<p class="verdict">Не є виною лише Bolt.</p>
+</div>
+
+<div class="case">
+<h3>6. Z9DGW — 7 672,20 ₴</h3>
+<p class="facts">Манго, ікра, шоколад — без алкоголю. Ready був. Кілька кур’єрів. CS: «restaurant closed / working hours».</p>
+<div class="cols">
+  <div>
+    <h4>Bolt / кур’єр</h4>
+    <ul><li>Знову немає arrive/pickup.</li><li>CS-формулювання «закриті».</li></ul>
+  </div>
+  <div>
+    <h4>Партнер</h4>
+    <ul><li>Ордер був ready.</li><li>«Закриті» після ready — те саме протиріччя, що на 2N4ST.</li></ul>
+  </div>
+</div>
+<p class="verdict">Не є виною лише Bolt.</p>
+</div>
+
+<h2>Спільні чинники</h2>
+<div class="cols">
+  <div>
+    <h4>Bolt (системно)</h4>
+    <ul>
+      <li>Немає пікап-коду на Копійці → немає незалежного підтвердження видачі.</li>
+      <li>Кур’єри з нулем доставок могли брати high-value 18+.</li>
+      <li>CS-причина «closed» накладається на стан ready.</li>
+      <li>Fail і нульовий payout — правильний стан за аппом, але не доказ, що товар лишився в магазині.</li>
+    </ul>
+  </div>
+  <div>
+    <h4>Партнер (операційно)</h4>
+    <ul>
+      <li>Ready і POS-чек без акту одержувача.</li>
+      <li>18+ і унікальні пляшки без верифікації.</li>
+      <li>Немає CCTV у момент претензії.</li>
+      <li>На HQPGG власна версія для CS була OOS.</li>
+    </ul>
+  </div>
+</div>
+<p>Базовий фон тих самих двох точок за червень–липень: сотні звичайних delivered-ордерів із середнім чеком близько 18 €. Ці шість — хвіст 150–424 €. Мережа в цілому працює; спір сидить на high-value без коду видачі.</p>
+
+<h2>Рекомендація</h2>
+<ol>
+  <li><strong>2N4ST:</strong> комерційне врегулювання 50/50 (по 10 721,08 ₴), разово, без визнання вини, тільки цей ref.</li>
+  <li><strong>Не покривати 100% від Bolt</strong> — це визнати handover, якого в системі немає.</li>
+  <li><strong>Не відшивати 100% на партнера</strong> в тоні «ви все вигадали» — у Bolt теж діра: коди, саплай, формулювання CS.</li>
+  <li>Решту п’ять чеків не піднімати в листі, поки партнер сам їх не виставить.</li>
+  <li>Закрити причину: пікап-коди на Копійці та рітейлі; ескалація high-value до 12 днів, поки живе відео.</li>
+</ol>
+
+<footer>
+  Дані: Bolt Delivery production tables, липень 2026. Документ описовий, не є юридичним висновком.
+</footer>
+
+</div>
+</body>
+</html>
