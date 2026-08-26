@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Пікап-коди — флоу передачі замовлення</title>
+<meta property="og:title" content="Пікап-коди: як передається замовлення зараз і як буде">
+<meta property="og:description" content="Флоу передачі замовлення від магазину кур'єру — поточний процес і цільовий з пікап-кодом.">
+<style>
+  :root {
+    --bg: #0b0d12;
+    --fg: #f2f4f8;
+    --muted: #9aa3b2;
+    --line: rgba(255,255,255,0.09);
+    --card: rgba(255,255,255,0.035);
+    --red: #ff6b5a;
+    --amber: #ffb020;
+    --green: #3ddc84;
+    --blue: #4aa8ff;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(60vw 60vw at 12% -10%, rgba(255,107,90,0.16), transparent 60%),
+      radial-gradient(55vw 55vw at 88% 8%, rgba(61,220,132,0.14), transparent 60%),
+      radial-gradient(70vw 50vw at 50% 105%, rgba(74,168,255,0.12), transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 72px 24px 110px; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    background: rgba(255,255,255,0.04);
+    padding: 6px 14px; border-radius: 999px;
+    backdrop-filter: blur(8px);
+  }
+  .eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(135deg, var(--green), var(--blue)); }
+
+  h1 {
+    font-size: clamp(30px, 5vw, 54px);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin: 22px 0 14px;
+    background: linear-gradient(115deg, #ffffff 12%, #b9c6ff 48%, #6fe3a8 92%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .lead { color: var(--muted); font-size: clamp(15px, 1.6vw, 19px); max-width: 720px; margin: 0 0 8px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px;
+    margin-top: 54px;
+    align-items: start;
+  }
+
+  .panel {
+    position: relative;
+    border-radius: 22px;
+    padding: 30px 26px 34px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+    overflow: hidden;
+  }
+  .panel::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: 22px;
+    padding: 1px;
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    pointer-events: none;
+  }
+  .panel.now::before { background: linear-gradient(150deg, rgba(255,107,90,0.65), rgba(255,176,32,0.25) 45%, transparent 75%); }
+  .panel.next::before { background: linear-gradient(150deg, rgba(61,220,132,0.65), rgba(74,168,255,0.3) 45%, transparent 75%); }
+  .panel.now { background: linear-gradient(170deg, rgba(255,107,90,0.09), rgba(255,255,255,0.02) 55%); }
+  .panel.next { background: linear-gradient(170deg, rgba(61,220,132,0.09), rgba(255,255,255,0.02) 55%); }
+
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 5px 11px; border-radius: 7px;
+  }
+  .tag.bad { color: #ffd6cf; background: linear-gradient(135deg, rgba(255,107,90,0.35), rgba(255,107,90,0.14)); }
+  .tag.good { color: #ccf7de; background: linear-gradient(135deg, rgba(61,220,132,0.32), rgba(74,168,255,0.14)); }
+  .panel h2 { font-size: 23px; letter-spacing: -0.02em; margin: 14px 0 4px; }
+  .panel .note { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+  .step { position: relative; padding: 0 0 26px 52px; }
+  .step:last-child { padding-bottom: 0; }
+  .step::before {
+    counter-increment: s;
+    content: counter(s);
+    position: absolute; left: 0; top: 0;
+    width: 32px; height: 32px; border-radius: 11px;
+    display: grid; place-items: center;
+    font-size: 13px; font-weight: 700;
+    color: #0b0d12;
+    background: linear-gradient(140deg, #ffffff, #c8d3e6);
+  }
+  .step::after {
+    content: "";
+    position: absolute; left: 15.5px; top: 36px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.28), rgba(255,255,255,0.04));
+  }
+  .step:last-child::after { display: none; }
+  .step .t { font-weight: 600; font-size: 16px; letter-spacing: -0.01em; }
+  .step .d { color: var(--muted); font-size: 14px; margin-top: 3px; }
+
+  .step.hit::before { background: linear-gradient(140deg, var(--red), #ff9a4d); color: #2a0d08; }
+  .step.win::before { background: linear-gradient(140deg, var(--green), var(--blue)); color: #04210f; }
+  .step.check::before { background: linear-gradient(140deg, var(--amber), #ffd76a); color: #2b1c00; }
+
+  .branch {
+    margin-top: 12px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .branch .b {
+    border-radius: 13px; padding: 12px 14px;
+    border: 1px solid var(--line);
+    font-size: 13.5px; line-height: 1.45;
+  }
+  .branch .b b { display: block; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+  .branch .no { background: linear-gradient(160deg, rgba(255,107,90,0.16), rgba(255,255,255,0.02)); }
+  .branch .no b { color: var(--red); }
+  .branch .yes { background: linear-gradient(160deg, rgba(61,220,132,0.16), rgba(255,255,255,0.02)); }
+  .branch .yes b { color: var(--green); }
+
+  .outcome {
+    margin-top: 26px; padding: 16px 18px; border-radius: 15px;
+    font-size: 14.5px; line-height: 1.5;
+    border: 1px solid var(--line);
+  }
+  .outcome.bad { background: linear-gradient(140deg, rgba(255,107,90,0.2), rgba(255,255,255,0.02)); }
+  .outcome.good { background: linear-gradient(140deg, rgba(61,220,132,0.2), rgba(74,168,255,0.08)); }
+  .outcome strong { display: block; margin-bottom: 3px; }
+
+  h3.sec {
+    font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin: 76px 0 20px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  h3.sec::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, var(--line), transparent); }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .card {
+    border-radius: 18px; padding: 24px;
+    border: 1px solid var(--line);
+    background: linear-gradient(165deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015));
+    backdrop-filter: blur(10px);
+  }
+  .card h4 { margin: 0 0 4px; font-size: 17px; letter-spacing: -0.01em; }
+  .card .who { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+  .card ul { margin: 0; padding-left: 18px; color: #d8dee9; font-size: 14.5px; }
+  .card li { margin: 7px 0; }
+  .card.bolt { box-shadow: inset 0 1px 0 rgba(74,168,255,0.28); }
+  .card.partner { box-shadow: inset 0 1px 0 rgba(61,220,132,0.28); }
+
+  footer { margin-top: 84px; padding-top: 22px; border-top: 1px solid var(--line); color: var(--muted); font-size: 13px; }
+  footer a { color: #9fc6ff; }
+
+  @media (max-width: 900px) {
+    .grid, .cards { grid-template-columns: 1fr; }
+    .wrap { padding: 44px 18px 72px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="eyebrow"><span class="dot"></span>Bolt Delivery &middot; передача замовлення</span>
+
+  <h1>Пікап-коди на видачі замовлення</h1>
+  <p class="lead">Як передача товару від магазину кур'єру працює зараз і що змінює пікап-код. Схема для узгодження технічної частини з партнером.</p>
+
+  <div class="grid">
+
+    <section class="panel now">
+      <span class="tag bad">Як зараз</span>
+      <h2>Передача без підтвердження</h2>
+      <p class="note">Факт видачі товару ніде не фіксується — ні системою, ні документом.</p>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="t">Кур'єр приїжджає в магазин</div>
+          <div class="d">Називає номер замовлення на словах</div>
+        </li>
+        <li class="step">
+          <div class="t">Персонал видає товар</div>
+          <div class="d">Перевірки, що це саме той кур'єр, немає</div>
+        </li>
+        <li class="step hit">
+          <div class="t">Статус Picked up не проставляється</div>
+          <div class="d">Ні кур'єр у застосунку, ні магазин у планшеті</div>
+        </li>
+        <li class="step hit">
+          <div class="t">Замовлення падає у fail</div>
+          <div class="d">Система вважає, що товар так і не забрали</div>
+        </li>
+      </ol>
+
+      <div class="outcome bad">
+        <strong>Результат</strong>
+        Доказу передачі немає в жодної зі сторін. Через місяць залишається тільки чек магазину проти логів Bolt — і спір, який неможливо закрити фактами.
+      </div>
+    </section>
+
+    <section class="panel next">
+      <span class="tag good">Як буде з пікап-кодом</span>
+      <h2>Передача під код</h2>
+      <p class="note">Товар не залишає магазин, поки код не звірено. Кожна видача лишає слід.</p>
+
+      <ol class="steps">
+        <li class="step">
+          <div class="t">Кур'єр приїжджає в магазин</div>
+          <div class="d">У застосунку кур'єра згенеровано код на це замовлення</div>
+        </li>
+        <li class="step">
+          <div class="t">Кур'єр показує код</div>
+          <div class="d">Код прив'язаний до конкретного замовлення й кур'єра</div>
+        </li>
+        <li class="step check">
+          <div class="t">Працівник магазину звіряє код</div>
+          <div class="d">Вводить код у планшет Bolt перед видачею</div>
+          <div class="branch">
+            <div class="b no"><b>Не збігся</b>Товар не видається, звернення в підтримку Bolt</div>
+            <div class="b yes"><b>Збігся</b>Видача товару кур'єру</div>
+          </div>
+        </li>
+        <li class="step win">
+          <div class="t">Статус Picked up проставляється автоматично</div>
+          <div class="d">Ручний крок прибрано — його неможливо пропустити</div>
+        </li>
+        <li class="step win">
+          <div class="t">У лог пишеться час, код і кур'єр</div>
+          <div class="d">Запис доступний обом сторонам</div>
+        </li>
+      </ol>
+
+      <div class="outcome good">
+        <strong>Результат</strong>
+        Кожна передача підтверджена з обох боків. Спірний кейс закривається логом за хвилини, а не листуванням на місяць.
+      </div>
+    </section>
+
+  </div>
+
+  <h3 class="sec">Що потрібно від кожної сторони</h3>
+
+  <div class="cards">
+    <div class="card bolt">
+      <h4>Bolt</h4>
+      <div class="who">Технічна частина</div>
+      <ul>
+        <li>Увімкнути пікап-коди на точках партнера</li>
+        <li>Показ коду в застосунку кур'єра на екрані замовлення</li>
+        <li>Поле вводу коду в планшеті магазину</li>
+        <li>Автоматичний Picked up після звірки коду</li>
+        <li>Доступ до логу передачі для розбору спірних кейсів</li>
+      </ul>
+    </div>
+    <div class="card partner">
+      <h4>Партнер</h4>
+      <div class="who">Операційна частина</div>
+      <ul>
+        <li>Інструктаж персоналу: без коду товар не видається</li>
+        <li>Планшет Bolt увімкнений і доступний на видачі</li>
+        <li>Відповідальний на точці за дотримання процесу</li>
+        <li>До запуску кодів — фіксація факту передачі (фото або камера)</li>
+        <li>Звернення щодо спірних видач у межах 7 днів</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>
+    Матеріал для узгодження з партнером. Контекст і дані по кейсах — у <a href="./index.html">загальному огляді</a> та <a href="./SANTIM-timeline-fail-reasons.pdf">PDF з таймлайнами</a>.
+  </footer>
+
+</div>
+</body>
+</html>
